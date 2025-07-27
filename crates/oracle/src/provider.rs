@@ -57,7 +57,6 @@ impl<T: CommsClient + Sync + Send> EigenDAProvider for OracleEigenDaProvider<T> 
         // see https://github.com/Layr-Labs/eigenda-proxy/blob/main/commitments/mode.go#L39
         // the first byte my guess is the OP
         let cert_blob_info = BlobInfo::decode(&mut &commitment[3..]).unwrap();
-        tracing::debug!("cert_blob_info {:?}", cert_blob_info);
 
         // data_length measurs in field element, multiply to get num bytes
         let mut blob: Vec<u8> =
@@ -74,8 +73,6 @@ impl<T: CommsClient + Sync + Send> EigenDAProvider for OracleEigenDaProvider<T> 
         // In eigenDA terminology, length describes the number of field element, size describes
         // number of bytes.
         let data_length = cert_blob_info.blob_header.data_length as u64;
-
-        tracing::debug!("cert_blob_info.blob_header.data_length {:?}", data_length);
 
         // the common key
         blob_key[..32].copy_from_slice(&cert_blob_info.blob_header.commitment.x);
@@ -105,7 +102,6 @@ impl<T: CommsClient + Sync + Send> EigenDAProvider for OracleEigenDaProvider<T> 
             blob[(i as usize) << 5..(i as usize + 1) << 5].copy_from_slice(field_element.as_ref());
         }
 
-        tracing::debug!(target: "client_oracle", "Retrieved blob from eigen da with commitment {commitment:?} from the oracle.");
         let eigenda_blob_data = EigenDABlobData::new(Bytes::copy_from_slice(&blob));
         let blobs = eigenda_blob_data.decode();
 

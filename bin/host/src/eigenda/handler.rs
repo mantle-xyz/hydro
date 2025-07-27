@@ -13,7 +13,6 @@ use kona_host::{
 };
 use kona_preimage::{PreimageKey, PreimageKeyType};
 use kona_proof::Hint;
-use tracing::debug;
 
 /// The [HintHandler] for the [EigenDAChainHost].   
 #[derive(Debug, Clone, Copy)]
@@ -33,7 +32,7 @@ impl HintHandler for EigenDAChainHintHandler {
             HintWrapper::Standard(standard_hint) => {
                 let inner_hint = Hint {
                     ty: standard_hint,
-                    data: hint.data,
+                    data: hint.data.clone(),
                 };
 
                 match SingleChainHintHandler::fetch_hint(
@@ -45,7 +44,7 @@ impl HintHandler for EigenDAChainHintHandler {
                 .await
                 {
                     Ok(_) => (),
-                    Err(err) => anyhow::bail!("Standard Hint processing error {err}"),
+                    Err(err) => anyhow::bail!("Standard Hint processing error {err} on hint type {standard_hint} and data {:x}", hint.data),
                 }
             }
             HintWrapper::EigenDABlob => {
@@ -93,7 +92,7 @@ impl HintHandler for EigenDAChainHintHandler {
                         PreimageKey::new(*blob_key_hash, PreimageKeyType::Keccak256).into(),
                         blob_key.into(),
                     )?;
-                    debug!("save block key, hash {:?}", blob_key_hash);
+
                     let start = (i as usize) << 5;
                     let end = start + 32;
                     let actual_end = eigenda_blob.blob.len().min(end);
@@ -109,7 +108,6 @@ impl HintHandler for EigenDAChainHintHandler {
                         PreimageKey::new(*blob_key_hash, PreimageKeyType::GlobalGeneric).into(),
                         data_slice.into(),
                     )?;
-                    debug!("save blob slice, hash {:?}", blob_key_hash);
                 }
 
                 // proof is at the random point
@@ -155,13 +153,11 @@ impl HintHandler for EigenDAChainHintHandler {
                     PreimageKey::new(*kzg_proof_key_hash, PreimageKeyType::Keccak256).into(),
                     kzg_proof_key.into(),
                 )?;
-                debug!("save proof key, hash {:?}", kzg_proof_key_hash);
                 // proof to be done
                 kv_lock.set(
                     PreimageKey::new(*kzg_proof_key_hash, PreimageKeyType::GlobalGeneric).into(),
                     proof.into(),
                 )?;
-                debug!("save proof value, hash {:?}", kzg_proof_key_hash);
 
                 let commitment: Vec<u8> = witness
                     .commitments
@@ -172,7 +168,6 @@ impl HintHandler for EigenDAChainHintHandler {
                     PreimageKey::new(*kzg_commitment_key_hash, PreimageKeyType::Keccak256).into(),
                     kzg_commitment_key.into(),
                 )?;
-                debug!("save commitment key, hash {:?}", kzg_commitment_key_hash);
 
                 // proof to be done
                 kv_lock.set(
@@ -180,7 +175,6 @@ impl HintHandler for EigenDAChainHintHandler {
                         .into(),
                     commitment.into(),
                 )?;
-                debug!("save commitment value, hash {:?}", kzg_commitment_key_hash);
             }
         }
         Ok(())

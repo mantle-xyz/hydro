@@ -4,12 +4,7 @@ members = ["bin/*", "crates/*"]
 
 
 [workspace.dependencies]
-# # Workspace
-# hana-client = { path = "bin/client", version = "0.1.0", default-features = false }
-# hana-celestia = { path = "crates/celestia", version = "0.1.0", default-features = false }
-# hana-proofs = { path = "crates/proofs", version = "0.1.0", default-features = false }
-# hana-blobstream = { path = "crates/blobstream", version = "0.1.0", default-features = false }
-# hana-oracle = { path = "crates/oracle", version = "0.1.0", default-features = false }
+# Hydro
 hydro-client = { path = "bin/client", version = "0.1.0", default-features = false }
 hydro-eigenda = { path = "crates/eigenda", version = "0.1.0", default-features = false }
 hydro-oracle = { path = "crates/oracle", version = "0.1.0", default-features = false }
@@ -20,20 +15,20 @@ hydro-proofs = { path = "crates/proofs", version = "0.1.0", default-features = f
 # but publish infrequently (last was 2 weeks ago). We want to make sure to use the latest code
 # while we're still figuring out how to integrate with it.
 # Replace these version-based dependencies
-kona-mpt = { git = "https://github.com/op-rs/kona", tag = "kona-client/v1.0.1", default-features = false }
-kona-derive = { git = "https://github.com/op-rs/kona", tag = "kona-client/v1.0.1", default-features = false }
-kona-driver = { git = "https://github.com/op-rs/kona", tag = "kona-client/v1.0.1", default-features = false }
-kona-executor = { git = "https://github.com/op-rs/kona", tag = "kona-client/v1.0.1", default-features = false }
-kona-proof = { git = "https://github.com/op-rs/kona", tag = "kona-client/v1.0.1", default-features = false }
-kona-std-fpvm = { git = "https://github.com/op-rs/kona", tag = "kona-client/v1.0.1", default-features = false }
-kona-preimage = { git = "https://github.com/op-rs/kona", tag = "kona-client/v1.0.1", default-features = false }
-kona-std-fpvm-proc = { git = "https://github.com/op-rs/kona", tag = "kona-client/v1.0.1", default-features = false }
-kona-providers-alloy = { git = "https://github.com/op-rs/kona", tag = "kona-client/v1.0.1", default-features = false }
-kona-protocol = { git = "https://github.com/op-rs/kona", tag = "kona-client/v1.0.1", default-features = false }
-kona-genesis = { git = "https://github.com/op-rs/kona", tag = "kona-client/v1.0.1", default-features = false }
-kona-client = { git = "https://github.com/op-rs/kona", tag = "kona-client/v1.0.1", default-features = false }
-kona-host = { git = "https://github.com/op-rs/kona", tag = "kona-client/v1.0.1" }
-kona-cli = { git = "https://github.com/op-rs/kona", tag = "kona-client/v1.0.1" }
+kona-mpt = { git = "https://github.com/mantle-xyz/kona", branch = "kona-client/v1.0.1_mantle", default-features = false }
+kona-derive = { git = "https://github.com/mantle-xyz/kona", branch = "kona-client/v1.0.1_mantle", default-features = false }
+kona-driver = { git = "https://github.com/mantle-xyz/kona", branch = "kona-client/v1.0.1_mantle", default-features = false }
+kona-executor = { git = "https://github.com/mantle-xyz/kona", branch = "kona-client/v1.0.1_mantle", default-features = false }
+kona-proof = { git = "https://github.com/mantle-xyz/kona", branch = "kona-client/v1.0.1_mantle", default-features = false }
+kona-std-fpvm = { git = "https://github.com/mantle-xyz/kona", branch = "kona-client/v1.0.1_mantle", default-features = false }
+kona-preimage = { git = "https://github.com/mantle-xyz/kona", branch = "kona-client/v1.0.1_mantle", default-features = false }
+kona-std-fpvm-proc = { git = "https://github.com/mantle-xyz/kona", branch = "kona-client/v1.0.1_mantle", default-features = false }
+kona-providers-alloy = { git = "https://github.com/mantle-xyz/kona", branch = "kona-client/v1.0.1_mantle", default-features = false }
+kona-protocol = { git = "https://github.com/mantle-xyz/kona", branch = "kona-client/v1.0.1_mantle", default-features = false }
+kona-genesis = { git = "https://github.com/mantle-xyz/kona", branch = "kona-client/v1.0.1_mantle", default-features = false }
+kona-client = { git = "https://github.com/mantle-xyz/kona", branch = "kona-client/v1.0.1_mantle", default-features = false }
+kona-host = { git = "https://github.com/mantle-xyz/kona", branch = "kona-client/v1.0.1_mantle" }
+kona-cli = { git = "https://github.com/mantle-xyz/kona", branch = "kona-client/v1.0.1_mantle" }
 
 # Alloy
 alloy-rlp = { version = "0.3.11", default-features = false }
@@ -57,9 +52,9 @@ alloy-sol-types = { version = "1.0.0", default-features = false }
 alloy-chains = { version = "0.2.0", default-features = false }
 
 # OP Alloy
-op-alloy-network = { version = "0.15.1", default-features = false }
-op-alloy-consensus = { version = "0.15.1", default-features = false }
-op-alloy-rpc-types-engine = { version = "0.15.1", default-features = false }
+op-alloy-network = { git = "https://github.com/mantle-xyz/op-alloy", branch = "v151", default-features = false }
+op-alloy-consensus = { git = "https://github.com/mantle-xyz/op-alloy", branch = "v151", default-features = false }
+op-alloy-rpc-types-engine = { git = "https://github.com/mantle-xyz/op-alloy", branch = "v151", default-features = false }
 
 # General
 lru = "0.12.5"
@@ -103,17 +98,10 @@ op-revm = { git = "https://github.com/mantle-xyz/revm", branch = "skadi_new", de
 alloy-evm = { git = "https://github.com/mantle-xyz/evm", branch = "dev", default-features = false }
 alloy-op-evm = { git = "https://github.com/mantle-xyz/evm", branch = "dev", default-features = false }
 
-
-# Celestia
-celestia-types = { git = "https://github.com/eigerco/lumina", rev = "4751731" }
-celestia-rpc = { git = "https://github.com/eigerco/lumina", rev = "4751731" }
-jsonrpsee = "0.24.9"
-
 # proto
 prost = { version = "0.13.3", default-features = false, features = ["derive"] }
 hex = { version = "0.4.3", default-features = false }
 rlp = { version = "0.6.1", default-features = false }
-miniz_oxide = "0.8.8"
 
 #eigenlayer
 rust-kzg-bn254-primitives = { git = "https://github.com/Layr-Labs/rust-kzg-bn254", rev = "b3e532e9aad533009849755d5ad7b9578a16bfb2", default-features = false }

@@ -109,10 +109,12 @@ where
                 _ => continue,
             };
             let Some(to) = tx_kind else { continue };
+
             if to != self.batcher_address {
                 index += blob_hashes.map_or(0, |h| h.len() as u64);
                 continue;
             }
+
             if tx.recover_signer().unwrap_or_default() != batcher_address {
                 index += blob_hashes.map_or(0, |h| h.len() as u64);
                 continue;
@@ -126,10 +128,7 @@ where
                         continue;
                     };
                     for blob in blob_hashes {
-                        let indexed = IndexedBlobHash {
-                            hash: blob,
-                            index: index,
-                        };
+                        let indexed = IndexedBlobHash { hash: blob, index };
                         hashes.push(indexed);
                         index += 1;
                     }
@@ -219,15 +218,11 @@ where
                     }
                 }
             }
-            debug!(target: "eigen-da-source", "whole blob data size {}", whole_blob_data.len());
 
             let rlp_blob: VecOfBytes = decode(&whole_blob_data)
                 .map_err(|e| EigenDAProviderError::RLPDecodeError(e.to_string()))?;
 
-            debug!(target: "eigen-da-source", "rlp blob data len {}", rlp_blob.0.len());
-
             for blob in rlp_blob.0 {
-                debug!(target: "eigen-da-source", "rlp decode blob vec size {}", blob.len());
                 blob_data.push(Bytes::from(blob));
             }
         }
@@ -241,7 +236,7 @@ where
     fn next_data(&mut self) -> Result<Bytes, PipelineResult<Bytes>> {
         if self.data.is_empty() {
             return Err(Err(PipelineError::Eof.temp()));
-        }
+    }
 
         Ok(self.data.remove(0))
     }
