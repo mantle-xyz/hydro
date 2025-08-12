@@ -108,7 +108,10 @@ where
                 },
                 _ => continue,
             };
-            let Some(to) = tx_kind else { continue };
+            let Some(to) = tx_kind else {
+                index += blob_hashes.map_or(0, |h| h.len() as u64);
+                continue;
+            };
 
             if to != self.batcher_address {
                 index += blob_hashes.map_or(0, |h| h.len() as u64);
@@ -145,15 +148,28 @@ where
                         calldata_frame::Value::Frame(frame) => data.push(Bytes::from(frame)),
                         calldata_frame::Value::FrameRef(frame_ref) => {
                             if frame_ref.quorum_ids.is_empty() {
-                                warn!(target: "eigen-da-source", "decoded frame ref contains no quorum IDs");
-                                continue;
+                                return Err(EigenDAProviderError::RetrieveFramesFromDaIndexer(
+                                    "decoded frame ref contains no quorum IDs".to_string(),
+                                ));
                             }
                             let blob_data = self
                                 .eigen_da_provider
                                 .blob_get(&frame_ref.commitment)
                                 .await
                                 .map_err(|e| EigenDAProviderError::Status(e.to_string()))?;
-                            let blobs = &blob_data[..frame_ref.blob_length as usize];
+                            
+                            let blob_length = frame_ref.blob_length as usize;
+                            if blob_length > blob_data.len() {
+                                return Err(EigenDAProviderError::RetrieveFramesFromDaIndexer(
+                                    alloc::format!(
+                                        "frame_ref.blob_length ({}) exceeds actual blob data length ({})",
+                                        blob_length,
+                                        blob_data.len()
+                                    ),
+                                ));
+                            }
+                            
+                            let blobs = &blob_data[..blob_length];
                             let blob_data: VecOfBytes = decode(blobs)
                                 .map_err(|e| EigenDAProviderError::RLPDecodeError(e.to_string()))?;
                             for blob in blob_data.0 {
@@ -236,7 +252,7 @@ where
     fn next_data(&mut self) -> Result<Bytes, PipelineResult<Bytes>> {
         if self.data.is_empty() {
             return Err(Err(PipelineError::Eof.temp()));
-    }
+        }
 
         Ok(self.data.remove(0))
     }

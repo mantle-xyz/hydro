@@ -42,8 +42,7 @@ impl EigenDABlobWitness {
         let input = Blob::new(blob);
         let input_poly = input.to_polynomial_eval_form();
 
-        kzg.calculate_and_store_roots_of_unity(blob.len() as u64)
-            .unwrap();
+        kzg.calculate_and_store_roots_of_unity(blob.len() as u64)?;
 
         let mut commitment_bytes = vec![0u8; 0];
 
