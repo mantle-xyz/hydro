@@ -26,6 +26,17 @@ impl EigenDABlobData {
             return Err(BlobDecodingError::InvalidLength);
         }
 
+        // Validate header format
+        // The first byte must be 0 to comply with bn254 field element constraint
+        if blob[0] != 0 {
+            return Err(BlobDecodingError::InvalidLength);
+        }
+
+        // The second byte must be the expected encoding version
+        if blob[1] != BLOB_ENCODING_VERSION_0 {
+            return Err(BlobDecodingError::InvalidLength);
+        }
+
         // see https://github.com/Layr-Labs/eigenda/blob/f8b0d31d65b29e60172507074922668f4ca89420/api/clients/codecs/default_blob_codec.go#L44
         let content_size = blob.slice(2..6).get_u32();
 
@@ -120,6 +131,34 @@ mod tests {
         let rollup_data = vec![1, 2, 3, 4];
         let mut eigenda_blob = EigenDABlobData::encode(&rollup_data);
         eigenda_blob.blob.truncate(33);
+        let result = eigenda_blob.decode();
+        assert!(result.is_err());
+        assert_eq!(result.unwrap_err(), BlobDecodingError::InvalidLength);
+    }
+
+    #[test]
+    fn test_decode_error_invalid_header_first_byte() {
+        let rollup_data = vec![1, 2, 3, 4];
+        let mut eigenda_blob = EigenDABlobData::encode(&rollup_data);
+        // Modify the first byte to be non-zero (invalid)
+        let mut blob_bytes = eigenda_blob.blob.to_vec();
+        blob_bytes[0] = 1;
+        eigenda_blob.blob = Bytes::from(blob_bytes);
+        
+        let result = eigenda_blob.decode();
+        assert!(result.is_err());
+        assert_eq!(result.unwrap_err(), BlobDecodingError::InvalidLength);
+    }
+
+    #[test]
+    fn test_decode_error_invalid_encoding_version() {
+        let rollup_data = vec![1, 2, 3, 4];
+        let mut eigenda_blob = EigenDABlobData::encode(&rollup_data);
+        // Modify the encoding version byte to be invalid
+        let mut blob_bytes = eigenda_blob.blob.to_vec();
+        blob_bytes[1] = 1; // Invalid version (should be 0)
+        eigenda_blob.blob = Bytes::from(blob_bytes);
+        
         let result = eigenda_blob.decode();
         assert!(result.is_err());
         assert_eq!(result.unwrap_err(), BlobDecodingError::InvalidLength);
