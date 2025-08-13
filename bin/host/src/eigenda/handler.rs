@@ -129,10 +129,10 @@ impl HintHandler for EigenDAChainHintHandler {
                 let mut witness = EigenDABlobWitness::new();
 
                 let _ = witness
-                    .push_witness(&blob)
+                    .push_witness(&eigenda_blob.blob)
                     .map_err(|e| anyhow!("eigen da blob push witness error {e}"))?;
 
-                let last_commitment = EigenDABlobData::encode(blob.as_ref()).blob;
+                let last_commitment = witness.commitments.last().unwrap();
 
                 if last_commitment[..32] != cert_blob_info.blob_header.commitment.x[..]
                     || last_commitment[32..64] != cert_blob_info.blob_header.commitment.y[..]
