@@ -26,6 +26,11 @@ impl EigenDABlobData {
             return Err(BlobDecodingError::InvalidLength);
         }
 
+        // blob must have multiple of 32 bytes
+        if blob.len() % BYTES_PER_FIELD_ELEMENT != 0 {
+            return Err(BlobDecodingError::InvalidLength);
+        }
+
         // Validate header format
         // The first byte must be 0 to comply with bn254 field element constraint
         if blob[0] != 0 {
@@ -42,6 +47,28 @@ impl EigenDABlobData {
 
         // the first 32 Bytes are reserved as the header field element
         let codec_data = blob.slice(32..);
+
+        // verify there is an empty byte for every 31 bytes
+        // this is a harder constraint than field element range check.
+        for chunk in codec_data.chunks_exact(BYTES_PER_FIELD_ELEMENT) {
+            // very conservative check on Field element range. It allows us to detect
+            // mishaving at the host side when providing the field element. So we can stop early.
+            // the field element of on bn254 curve is some number less than 2^254
+            // that means both 255 and 254 th bits must be 0. iut of conservation, we require the
+            // 253 bit to be 0. It aligns with our encoding scheme below that the first 8bits
+            // should be 0.
+            // Field elements are interpreted as big endian
+            if chunk[0] & 0b1110_0000 != 0 {
+                return Err(BlobDecodingError::InvalidFieldElement);
+            }
+
+            // field elements are interpreted as big endian. It can happen either because
+            // the host is misbehaving, or the op-batcher is not following the eigenda
+            // encoding standard
+            if chunk[0] != 0x0 {
+                return Err(BlobDecodingError::InvalidEncodingVersion.into());
+            }
+        }
 
         // rust kzg bn254 impl already
         let blob_content =
