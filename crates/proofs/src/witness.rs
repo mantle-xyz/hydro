@@ -5,6 +5,12 @@ use rust_kzg_bn254_primitives::blob::Blob;
 use rust_kzg_bn254_primitives::errors::KzgError;
 use rust_kzg_bn254_prover::kzg::KZG;
 use rust_kzg_bn254_prover::srs::SRS;
+use std::sync::LazyLock;
+
+static GLOBAL_SRS: LazyLock<SRS> = LazyLock::new(|| {
+    SRS::new("resources/g1.point", 268435456, 1000000)
+        .expect("Failed to initialize SRS")
+});
 
 /// stores the witness for a eigenDA blob
 #[derive(Debug, Clone, Default)]
@@ -32,11 +38,7 @@ impl EigenDABlobWitness {
     /// nitro code https://github.com/Layr-Labs/nitro/blob/14f09745b74321f91d1f702c3e7bb5eb7d0e49ce/arbitrator/prover/src/kzgbn254.rs#L141
     /// could refactor in the future, such that both host and client can compute the proof
     pub fn push_witness(&mut self, blob: &[u8]) -> Result<(), KzgError> {
-        // TODO remove the need for G2 access
-        // Add command line to specify where are g1 and g2 path
-        // In the future, it might make sense to let the proxy to return such
-        // value, instead of local computation
-        let srs = SRS::new("resources/g1.point", 268435456, 1000000).unwrap();
+        let srs = &*GLOBAL_SRS;
         let mut kzg = KZG::new();
 
         let input = Blob::new(blob);
