@@ -4,14 +4,15 @@ use crate::{
     proto::{calldata_frame, CalldataFrame},
 };
 use alloc::{boxed::Box, string::ToString, vec::Vec};
-use alloy_consensus::{Transaction, TxEip4844Variant, TxEnvelope, TxType};
+use alloy_consensus::{
+    transaction::SignerRecoverable, Transaction, TxEip4844Variant, TxEnvelope, TxType,
+};
 use alloy_eips::eip4844::IndexedBlobHash;
 use alloy_primitives::{Address, Bytes};
 use async_trait::async_trait;
 use kona_derive::{
-    errors::{BlobProviderError, PipelineError},
-    traits::{BlobProvider, ChainProvider, DataAvailabilityProvider},
-    types::PipelineResult,
+    BlobProvider, BlobProviderError, ChainProvider, DataAvailabilityProvider, PipelineError,
+    PipelineResult,
 };
 use kona_protocol::BlockInfo;
 use prost::Message;
@@ -157,7 +158,7 @@ where
                                 .blob_get(&frame_ref.commitment)
                                 .await
                                 .map_err(|e| EigenDAProviderError::Status(e.to_string()))?;
-                            
+
                             let blob_length = frame_ref.blob_length as usize;
                             if blob_length > blob_data.len() {
                                 return Err(EigenDAProviderError::RetrieveFramesFromDaIndexer(
@@ -168,7 +169,7 @@ where
                                     ),
                                 ));
                             }
-                            
+
                             let blobs = &blob_data[..blob_length];
                             let blob_data: VecOfBytes = decode(blobs)
                                 .map_err(|e| EigenDAProviderError::RLPDecodeError(e.to_string()))?;
@@ -204,7 +205,7 @@ where
         if !blob_hashes.is_empty() {
             let blobs = self
                 .blob_fetcher
-                .get_blobs(block_ref, &blob_hashes)
+                .get_and_validate_blobs(block_ref, &blob_hashes)
                 .await
                 .map_err(|e| {
                     warn!(target: "eigen-da-source", "Failed to fetch blobs: {e}");

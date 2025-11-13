@@ -1,7 +1,7 @@
 use alloc::{boxed::Box, string::ToString, vec::Vec};
 use async_trait::async_trait;
 use core::fmt::Display;
-use kona_derive::errors::PipelineErrorKind;
+use kona_derive::PipelineErrorKind;
 
 /// Describes the functionality of the Eigen DA client needed to fetch a blob
 #[async_trait]
