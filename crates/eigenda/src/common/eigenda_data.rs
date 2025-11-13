@@ -2,7 +2,7 @@ use crate::common::{BLOB_ENCODING_VERSION_0, BYTES_PER_FIELD_ELEMENT};
 use alloy_primitives::Bytes;
 use alloc::vec;
 use bytes::buf::Buf;
-use kona_derive::errors::BlobDecodingError;
+use kona_derive::BlobDecodingError;
 use rust_kzg_bn254_primitives::helpers;
 
 #[derive(Default, Clone, Debug)]

@@ -9,6 +9,7 @@ use kona_client::{fpvm_evm::FpvmOpEvmFactory, single::FaultProofProgramError};
 use kona_driver::Driver;
 use kona_executor::TrieDBProvider;
 use kona_preimage::{CommsClient, HintWriterClient, PreimageKey, PreimageOracleClient};
+use kona_genesis::L1ChainConfig;
 use kona_proof::{
     errors::OracleProviderError,
     executor::KonaExecutor,
@@ -38,6 +39,8 @@ where
         hint_client.clone(),
     ));
     let boot = BootInfo::load(oracle.as_ref()).await?;
+    // [Mantle] l1_config is not used in the proof pipeline, but it is needed to create the pipeline cursor.
+    let l1_config = Arc::new(L1ChainConfig::default());
     let rollup_config = Arc::new(boot.rollup_config);
     let safe_head_hash = fetch_safe_head_hash(oracle.as_ref(), boot.agreed_l2_output_root).await?;
 
@@ -87,7 +90,11 @@ where
         &mut l1_provider,
         &mut l2_provider,
     )
-    .await?;
+    .await
+    .map_err(|e| {
+        error!(target: "client", "Failed to create pipeline cursor: {:?}", e);
+        e
+    })?;
     l2_provider.set_cursor(cursor.clone());
 
     let evm_factory = FpvmOpEvmFactory::new(hint_client, oracle_client);
@@ -100,6 +107,7 @@ where
 
     let pipeline = OraclePipeline::new(
         rollup_config.clone(),
+        l1_config.into(),
         cursor.clone(),
         oracle.clone(),
         da_provider,

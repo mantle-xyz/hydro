@@ -1,7 +1,7 @@
 [package]
 name = "hydro-client"
-version = "0.1.0"
-edition = "2021"
+version.workspace = true
+edition.workspace = true
 
 [dependencies]
 hydro-eigenda.workspace = true
@@ -10,6 +10,7 @@ hydro-oracle.workspace = true
 kona-preimage.workspace = true
 kona-proof.workspace = true
 kona-driver.workspace = true
+kona-genesis.workspace = true
 kona-executor.workspace = true
 kona-client.workspace = true
 kona-std-fpvm.workspace = true
