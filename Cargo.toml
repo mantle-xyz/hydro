@@ -3,7 +3,7 @@ resolver = "2"
 members = ["bin/*", "crates/*"]
 
 [workspace.package]
-version = "0.2.0"
+version = "2.1.0"
 edition = "2021"
 
 [workspace.dependencies]
@@ -14,19 +14,19 @@ hydro-oracle = { path = "crates/oracle", default-features = false }
 hydro-proofs = { path = "crates/proofs", default-features = false }
 
 # Kona
-kona-derive = { git = "https://github.com/mantle-xyz/kona", branch = "fusaka", default-features = false }
-kona-driver = { git = "https://github.com/mantle-xyz/kona", branch = "fusaka", default-features = false }
-kona-executor = { git = "https://github.com/mantle-xyz/kona", branch = "fusaka", default-features = false }
-kona-proof = { git = "https://github.com/mantle-xyz/kona", branch = "fusaka", default-features = false }
-kona-std-fpvm = { git = "https://github.com/mantle-xyz/kona", branch = "fusaka", default-features = false }
-kona-preimage = { git = "https://github.com/mantle-xyz/kona", branch = "fusaka", default-features = false }
-kona-std-fpvm-proc = { git = "https://github.com/mantle-xyz/kona", branch = "fusaka", default-features = false }
-kona-providers-alloy = { git = "https://github.com/mantle-xyz/kona", branch = "fusaka", default-features = false }
-kona-protocol = { git = "https://github.com/mantle-xyz/kona", branch = "fusaka", default-features = false }
-kona-genesis = { git = "https://github.com/mantle-xyz/kona", branch = "fusaka", default-features = false }
-kona-client = { git = "https://github.com/mantle-xyz/kona", branch = "fusaka", default-features = false }
-kona-host = { git = "https://github.com/mantle-xyz/kona", branch = "fusaka" }
-kona-cli = { git = "https://github.com/mantle-xyz/kona", branch = "fusaka" }
+kona-derive = { git = "https://github.com/mantle-xyz/kona", tag = "v2.1.0", default-features = false }
+kona-driver = { git = "https://github.com/mantle-xyz/kona", tag = "v2.1.0", default-features = false }
+kona-executor = { git = "https://github.com/mantle-xyz/kona", tag = "v2.1.0", default-features = false }
+kona-proof = { git = "https://github.com/mantle-xyz/kona", tag = "v2.1.0", default-features = false }
+kona-std-fpvm = { git = "https://github.com/mantle-xyz/kona", tag = "v2.1.0", default-features = false }
+kona-preimage = { git = "https://github.com/mantle-xyz/kona", tag = "v2.1.0", default-features = false }
+kona-std-fpvm-proc = { git = "https://github.com/mantle-xyz/kona", tag = "v2.1.0", default-features = false }
+kona-providers-alloy = { git = "https://github.com/mantle-xyz/kona", tag = "v2.1.0", default-features = false }
+kona-protocol = { git = "https://github.com/mantle-xyz/kona", tag = "v2.1.0", default-features = false }
+kona-genesis = { git = "https://github.com/mantle-xyz/kona", tag = "v2.1.0", default-features = false }
+kona-client = { git = "https://github.com/mantle-xyz/kona", tag = "v2.1.0", default-features = false }
+kona-host = { git = "https://github.com/mantle-xyz/kona", tag = "v2.1.0" }
+kona-cli = { git = "https://github.com/mantle-xyz/kona", tag = "v2.1.0" }
 
 # Alloy
 alloy-rlp = { version = "0.3.11", default-features = false }
@@ -36,7 +36,7 @@ alloy-consensus = { version = "1.0.42", default-features = false }
 alloy-primitives = { version = "1.3.1", default-features = false }
 
 # OP Alloy
-op-alloy-network = { git = "https://github.com/mantle-xyz/op-alloy", branch = "v220", default-features = false }
+op-alloy-network = { git = "https://github.com/mantle-xyz/op-alloy", tag = "v2.1.0", default-features = false }
 
 # General
 clap = "4.5.24"

@@ -125,7 +125,7 @@ impl EigenDABlobData {
 mod tests {
     use super::*;
     use alloy_primitives::Bytes;
-    use kona_derive::errors::BlobDecodingError;
+    use kona_derive::BlobDecodingError;
 
     #[test]
     fn test_encode_and_decode_success() {
