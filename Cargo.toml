@@ -14,19 +14,19 @@ hydro-oracle = { path = "crates/oracle", default-features = false }
 hydro-proofs = { path = "crates/proofs", default-features = false }
 
 # Kona
-kona-derive = { git = "https://github.com/mantle-xyz/kona", tag = "v2.1.0", default-features = false }
-kona-driver = { git = "https://github.com/mantle-xyz/kona", tag = "v2.1.0", default-features = false }
-kona-executor = { git = "https://github.com/mantle-xyz/kona", tag = "v2.1.0", default-features = false }
-kona-proof = { git = "https://github.com/mantle-xyz/kona", tag = "v2.1.0", default-features = false }
-kona-std-fpvm = { git = "https://github.com/mantle-xyz/kona", tag = "v2.1.0", default-features = false }
-kona-preimage = { git = "https://github.com/mantle-xyz/kona", tag = "v2.1.0", default-features = false }
-kona-std-fpvm-proc = { git = "https://github.com/mantle-xyz/kona", tag = "v2.1.0", default-features = false }
-kona-providers-alloy = { git = "https://github.com/mantle-xyz/kona", tag = "v2.1.0", default-features = false }
-kona-protocol = { git = "https://github.com/mantle-xyz/kona", tag = "v2.1.0", default-features = false }
-kona-genesis = { git = "https://github.com/mantle-xyz/kona", tag = "v2.1.0", default-features = false }
-kona-client = { git = "https://github.com/mantle-xyz/kona", tag = "v2.1.0", default-features = false }
-kona-host = { git = "https://github.com/mantle-xyz/kona", tag = "v2.1.0" }
-kona-cli = { git = "https://github.com/mantle-xyz/kona", tag = "v2.1.0" }
+kona-derive = { git = "https://github.com/mantle-xyz/kona", tag = "v2.1.1", default-features = false }
+kona-driver = { git = "https://github.com/mantle-xyz/kona", tag = "v2.1.1", default-features = false }
+kona-executor = { git = "https://github.com/mantle-xyz/kona", tag = "v2.1.1", default-features = false }
+kona-proof = { git = "https://github.com/mantle-xyz/kona", tag = "v2.1.1", default-features = false }
+kona-std-fpvm = { git = "https://github.com/mantle-xyz/kona", tag = "v2.1.1", default-features = false }
+kona-preimage = { git = "https://github.com/mantle-xyz/kona", tag = "v2.1.1", default-features = false }
+kona-std-fpvm-proc = { git = "https://github.com/mantle-xyz/kona", tag = "v2.1.1", default-features = false }
+kona-providers-alloy = { git = "https://github.com/mantle-xyz/kona", tag = "v2.1.1", default-features = false }
+kona-protocol = { git = "https://github.com/mantle-xyz/kona", tag = "v2.1.1", default-features = false }
+kona-genesis = { git = "https://github.com/mantle-xyz/kona", tag = "v2.1.1", default-features = false }
+kona-client = { git = "https://github.com/mantle-xyz/kona", tag = "v2.1.1", default-features = false }
+kona-host = { git = "https://github.com/mantle-xyz/kona", tag = "v2.1.1" }
+kona-cli = { git = "https://github.com/mantle-xyz/kona", tag = "v2.1.1" }
 
 # Alloy
 alloy-rlp = { version = "0.3.11", default-features = false }
